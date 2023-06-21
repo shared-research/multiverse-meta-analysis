@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>sips-2023.knit</title>
+
+
+
+
+
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+<link href='https://fonts.googleapis.com/css?family=Rasa' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Rasa' rel='stylesheet'>
+
+<!--
+Here are the required style attributes for css to make this poster work :)
+-->
+<style>
+@page {
+size: 23.4in 33.1in;
+margin: 0;
+padding: 0;
+}
+body {
+margin: 0px;
+padding: 0px;
+width: 23.4in;
+height: 33.1in;
+text-align: justify;
+font-size: 33pt;
+line-height: 1.05;
+}
+/* RMarkdown Class Styles */
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r {
+background-color: #dddddd40;
+border-radius: 4mm;
+padding: 4mm;
+width: 75%;
+margin: auto;
+margin-top: 1em;
+margin-bottom: 1em;
+/* align-items: center; */
+}
+code.sourceCode.r{
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+code {
+font-size: 25pt;
+font-family: monospace;
+background-color: #21618C24;
+color: #0b4545;
+padding: 1.2mm;
+line-height: 1;
+border-radius: 2mm;
+}
+caption {
+margin-bottom: 10px;
+font-size: 20pt;
+font-style: italic;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #21618C20;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+  border-spacing: 0;
+  font-size: 40%;
+  border-style: none;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 1em;
+  padding-left: 1em;
+  line-height: 1em;
+}
+table {
+  margin: auto;
+}
+th {
+  padding-left: 5mm;
+  padding-right: 5mm;
+}
+.caption {
+font-size: 20pt;
+font-style: italic;
+padding-top: 0;
+}
+.references {
+font-size: 20px;
+line-height: 90%;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+float: left;
+padding: 0px;
+}
+.outer {
+width: 23.4in;
+height: calc(33.1in *  (1 - 0.13 - 8.0e-2 - 0.01) );
+-webkit-column-count: 2; /* Chrome, Safari, Opera */
+-moz-column-count: 2; /* Firefox */
+column-count: 2;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+column-gap: 0;
+padding-left: 0cm;
+padding-right: 0cm;
+/* -webkit-column-rule-width: 50%;
+-moz-column-rule-width: 50%;
+column-rule-width: 50%; */
+-webkit-column-rule-style: none;
+-moz-column-rule-style: none;
+column-rule-style: none;
+-webkit-column-rule-color: black;
+-moz-column-rule-color: black;
+column-rule-color: black;
+background-color: #ffffff;
+font-family: Rasa;
+margin-top: calc(33.1in *  0.13 );
+padding-top: 1em;
+padding-bottom: 1em;
+}
+span.citation {
+  color: #21618C;
+  font-weight: bold;
+}
+a {
+text-decoration: none;
+color: #21618C;
+}
+#title {
+font-size: 125pt;
+text-align: left;
+margin: 0;
+line-height: 98%;
+border-bottom: 0;
+font-weight: normal;
+background: 0;
+}
+#author {
+color: #0b4545;
+margin: 0;
+line-height: 85%;
+font-size: 1.17em;
+}
+#affiliation {
+padding-top: 0.1em;
+color: ;
+font-style: italic;
+font-size: 25px;
+margin: 0;
+}
+sup {
+color: #21618C;
+}
+.affiliation sup {
+font-size: 20px;
+}
+.author {
+text-align: left;
+}
+.author sup {
+font-size: 30px;
+}
+.author_extra {
+color: #21618C;
+margin: 0;
+line-height: 85%;
+font-size: 35px;
+text-align: left;
+}
+.outer h1, h2, h3, h4, h5, h6 {
+text-align: center;
+margin: 0;
+font-weight: bold;
+}
+.section h1 {
+  text-align:center;
+  padding-bottom:5px;
+  background:
+    linear-gradient(
+      to left,
+      #ffffff 1%,
+      #ffffff 20%,
+      #0b454575 33%,
+      #0b4545 50%,
+      #0b454575 66%,
+      #ffffff 80%,
+      #ffffff 99%
+    )
+    left
+    bottom
+    #ffffff
+    no-repeat;
+  background-size:100% 5px ;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.outer h2 {
+text-align: center;
+}
+.outer p, .level2 {
+color: #000000;
+}
+.outer ol {
+padding-left: 8%;
+padding-right: 8%;
+text-align: left;
+}
+.main {
+width: 23.4in;
+height: calc(33.1in * 0.13);
+position: absolute;
+background-color: #0b4545;
+color: #ffffff90;
+font-family: Rasa;
+background-image: linear-gradient(#0b4545 50%,#21618C);
+}
+.main strong {
+color: #ffffff;
+}
+.main strong > sup {
+color: #ffffff;
+}
+.main sup {
+color: #ffffff90;
+}
+#main-img-left {
+width: 10%;
+left: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+#main-img-center {
+width: 10%;
+left: calc(23.4in * 0.45);
+bottom: 0.5in;
+position: absolute;
+}
+#main-img-right {
+width: 10%;
+right: 0.5in;
+bottom: 0.2in;
+position: absolute;
+}
+.main p {
+font-size: 120px;
+font-family: Rasa;
+text-align: center;
+margin: 0;
+position: absolute;
+top: 50%;
+-ms-transform: translateY(-50%);
+transform: translateY(-50%);
+margin-left: 1em;
+}
+.fab {
+color: #00000030;
+font-size: 25px;
+}
+.twitter, i {
+color: #00000030;
+font-size: 35px;
+text-decoration: none;
+}
+a.email {
+text-decoration: none;
+color: #00000030;
+font-size: 35px;
+}
+.envelope {
+color: #00000030;
+font-size: 5px;
+text-decoration: none;
+}
+.poster_wrap {
+width: 23.4in;
+height: 33.1in;
+padding: 0cm;
+}
+.main_bottom {
+width: 23.4in;
+height: calc(33.1in * 8.0e-2);
+margin-top: calc(33.1in * (1 - 8.0e-2));
+position: absolute;
+background-color: #0b4545;
+background-image: linear-gradient(#21618C 10%, #0b4545);
+}
+.section {
+  padding-left: 10mm;
+  padding-right: 10mm;
+}
+span > #tab:mytable {
+  font-weight: bold;
+}
+.orcid img {
+  width: 3%;
+}
+.emphasis {
+  background-color: #008080;
+  color: #ffffff;
+  border: solid #0b2045 3mm;
+  margin: 1em;
+  padding-left: 0;
+  padding-right: 0;
+}
+.emphasis h1 {
+  font-weight: bold;
+  background: none;
+  background-color: #0b2045;
+  padding-bottom: 5mm;
+  padding-top: 1mm;
+  margin-top: -1mm;
+  margin-right: -1mm;
+  margin-left: -1mm;
+}
+.emphasis blockquote {
+  border: 0;
+}
+.emphasis ol {
+  padding: 0;
+  padding-left: 8%;
+  font-size: 100%;
+  font-weight: bold;
+}
+.emphasis p {
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+
+<div class="column outer">
+<div class="section">
+
+<h3 id="author" class="author">
+
+<strong>Filippo Gambarota</strong><sup> 1</sup><br>
+<a class="twitter" href="https://mobile.twitter.com/fgambarota"><i class="fab fa-twitter"></i>&nbsp;&nbsp;@fgambarota</a><br>
+
+<a class='envelope'><i class="fas fa-envelope"></i></a> <a href="mailto:filippo.gambarota@unipd.it" class="email">filippo.gambarota@unipd.it</a> <br>
+   </h3>
+
+<h5 id="author_extra", class="author_extra">
+ Anna Vesely<sup>2</sup>
+ Livio Finos<sup>3</sup>
+ Gianmarco Altoè<sup>1</sup>
+</h5>
+
+
+<p id="affiliation" class="affiliation">
+<sup>1</sup> Department of Developmental and Social Psychology, University of Padova<br> <sup>2</sup> Institute for Statistics, University of Bremen<br> <sup>3</sup> Department of Statistics, University of Padova
+</p>
+</div>
+
+<div id="the-multiverse-problem" class="section level1">
+<h1>The Multiverse problem</h1>
+<p><img src="img/big-picture.svg" width="80%" style="display: block; margin: auto;" /></p>
+<p><strong>As example, we used the dataset by <a href="https://pubmed.ncbi.nlm.nih.gov/34545236/">Daros et al. (2021)</a></strong> with a multivariate meta-analysis of RCTs designs with multiple measure for the same outcome. <strong>We considered a total of 162 plausible scenarios</strong>.</p>
+</div>
+<div id="the-proposed-workflow" class="section level1">
+<h1>The Proposed Workflow</h1>
+<p><img src="img/workflow.svg" width="100%" style="display: block; margin: auto;" /></p>
+<p>We <strong>simulated a plausible multiverse</strong> sampling from a multivariate normal distribution with a vector of means (i.e., the meta-analysis results) and a variance-covariance matrix for the relationship between different scenarios.</p>
+<p></br></p>
+</div>
+<div id="multiverse-summary" class="section level1">
+<h1>Multiverse Summary</h1>
+<p>The multiverse is a associated with an <strong>overall p-value <span class="math inline">\(&lt; 0.001\)</span></strong>, an <strong>average effect of <span class="math inline">\(0.403\)</span> (<span class="math inline">\(SD = 0.112\)</span>)</strong> and an <strong>average correlation of <span class="math inline">\(0.620\)</span> (<span class="math inline">\(SD = 0.102\)</span>)</strong>.</p>
+<p><img src="sips-2023_files/figure-html/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="sips-2023_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="multiverse-post-hoc-p-values" class="section level1">
+<h1>Multiverse post-hoc p-values</h1>
+<p><img src="sips-2023_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusions-and-next-steps" class="section level1">
+<h1>Conclusions and Next Steps</h1>
+<ul>
+<li><strong>Corrected p-values for valid post-hoc inference</strong> on specific scenarios</li>
+<li>The method <strong>control the Family-wise Error Rate (FWER)</strong> across the multiverse</li>
+<li><strong>Fast meta-analysis via permutations</strong> using the <code>flip</code> package</li>
+<li>Implementing multilevel and multivariate meta-analysis</li>
+</ul>
+<style type="text/css">
+#main-img-left, #main-img-center, #main-img-right {
+ width: 8%;
+}
+
+.main {
+    width: 23.4in;
+    height: calc(33.1in * 0.13);
+    position: absolute;
+    background-color: #21618C;
+    color: white;
+    font-family: Special Elite;
+    background-image: linear-gradient(#21618C 50%,#21618C);
+}
+
+.main_bottom {
+    width: 23.4in;
+    height: calc(33.1in * 8.0e-2);
+    margin-top: calc(33.1in * (1 - 8.0e-2));
+    position: absolute;
+    background-color: #21618C;
+    background-image: linear-gradient(#21618C 50%,#21618C);
+}
+
+.section h1 {
+    color: #1B4F72;
+    text-align: center;
+    padding-bottom: 5px;
+    background: linear-gradient( to left, #ffffff 1%, #ffffff 20%, #21618C 33%, #21618C 50%, #21618C 66%, #ffffff 80%, #ffffff 99% ) left bottom #ffffff no-repeat;
+    background-size: 100% 5px;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+p strong {
+    color: #C0392B;
+}
+
+ul strong {
+    color: #C0392B;
+}
+
+#main-img-right {
+    right: 0.5in;
+    bottom: 0.45in;
+    position: absolute;
+}
+
+#main-img-left {
+    right: 0.5in;
+    bottom: 0.4in;
+    position: absolute;
+}
+
+.twitter, i {
+    color: #8A8A8A;
+    font-size: 35px;
+    text-decoration: none;
+}
+
+a.email {
+    text-decoration: none;
+    color: #8A8A8A;
+    font-size: 35px;
+}
+
+#author {
+    color: #1B4F72;
+    margin: 0;
+    line-height: 85%;
+    font-size: 1.17em;
+}
+
+h1 {
+  font-size: 150%;
+}
+</style>
+</div>
+
+</div>
+<div class="main">
+<p><strong>joinmeta</strong> - controlling the type-1 error in multiverse meta-analysis</p>
+</div>
+<div class="main_bottom">
+<img id="main-img-left" src=img/psicostat.png>
+<img id="main-img-center" src=img/qrcode_final.svg>
+<img id="main-img-right" src=img/unipd.png>
+</div>
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+var script = document.createElement("script");
+script.type = "text/javascript";
+var src = "true";
+if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+if (location.protocol !== "file:" && /^https?:/.test(src))
+src = src.replace(/^https?:/, '');
+script.src = src;
+document.getElementsByTagName("head")[0].appendChild(script);
+})();
+</script>
+
+
+</body>
+</html>

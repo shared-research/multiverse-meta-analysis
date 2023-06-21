@@ -4,32 +4,138 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
   collapse = TRUE,
+  echo = TRUE,
   comment = "#>"
 )
+
+library(RefManageR)
 ```
 
-# multiverse-meta-analysis
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-The goal of multiverse-meta-analysis is to ...
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
+```{r bib, include = FALSE, echo = FALSE}
+bib <- RefManageR::ReadBib("files/ref.bib")
+RefManageR::NoCite(bib)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
+# Multiverse meta-analysis
 
-You can also embed plots, for example:
+This project aim to implement a framework for valid statistical inference for a multiverse analysis. The method is based on a multivariate permutation testing framework.
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+This is a work in progress project with the aim to develop the `joinmeta` package to perform a multiverse meta-analysis. Now the project depends on:
+
+```{r packages, eval = FALSE}
+pckgs <- c("metafor", "flip")
+install.packages(pckgs)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub.
+Furthermore there is the temporary need to install the [`jointest`](https://github.com/livioivil/jointest) package available on Github:
+
+```{r jointest, eval = FALSE}
+devtools::install_github("livioivil/jointest")
+```
+
+# Minimal example
+
+To perform a multiverse meta-analysis you can clone this repository and open the R Project. Then we can load the relevant packages:
+
+```{r}
+devtools::load_all() # to load all functions in the projects
+library(metafor)
+library(Matrix)
+library(MASS)
+library(jointest)
+library(flip)
+```
+
+Then we can simulate a multiverse matrix. In real applications the matrix is the result of fitting different models on the same dataset creating several different scenarios.
+
+```{r}
+# seed for the simulation
+set.seed(2080)
+
+# Multiverse
+ns <-  162 # number of multiverse scenarios
+nc <- ns^2/2 - ns/2 # number of correlations
+
+# Meta-analysis
+k <- 30 # number of studies
+theta <- 0.4 # real effect size
+tau2 <- 0.2 # real heterogeneity
+n <- 30 # sample size for each group per study
+
+# Effect sizes
+yi <- rnorm(k, rnorm(k, theta, sqrt(tau2)), sqrt(1/n + 1/n))
+
+# Sampling variances
+vi <- (rchisq(k, n + n - 2) / (n + n - 2)) * (1/n + 1/n)
+
+# this is a single hypothetical meta-analysis
+fit <- rma(yi, vi, method = "REML")
+
+# Now we simulate some variability in effect sizes and sampling variances
+# due to different analytically approach to the meta-analysis. For example
+# guessing a missing correlation, removing a study or choosing a specific
+# meta-analysis model
+
+b <- fit$b # average effect
+se <- fit$se # standard error
+
+bs <- runif(ns, b - b*0.5, b + b*0.5) # some variability in the average effect
+rs <- runif(nc, 0.6, 1) # correlations between scenarios
+ses <- runif(ns, se - 0.25*se, se + 0.25*se) # some variability in the standard error
+
+# correlation matrix of the multiverse
+R <- matrix(NA, ns, ns)
+R[upper.tri(R)] <- rs
+R[lower.tri(R)] <- rs
+diag(R) <- 1
+
+# variance-covariance matrix of the multiverse
+V <- diag(sqrt(ses^2 + tau2)) %*% R %*% diag(sqrt(ses^2 + tau2))
+V <- as.matrix(Matrix::nearPD(V)$mat) # make positive definite
+
+# generating observed effects across the multiverse
+X <- MASS::mvrnorm(k, bs, V)
+
+# fitting a meta-analysis model for each scenario
+
+fitl <- vector(mode = "list", length = ns)
+
+for(i in 1:ns){
+  # some variability in the sampling variances
+  vis <- runif(k, vi - 0.25*vi, vi + 0.25*vi)
+  fitl[[i]] <- rma(X[, i], vis)
+}
+
+# fitl is the list of fitted models to each multiverse scenario. this is usually the starting point for the multiverse analysis.
+```
+
+Now we can combine the multiverse obtaining the overall p-value and the post-hoc corrected p-values for each scenario.
+
+```{r}
+# permutations of each scenario
+multi <- multiverse(fitl)
+
+multi_comb <- jointest::combine(multi)
+
+# overall pvalue
+summary(multi_comb)
+
+# adjusting each p-value using maxT
+res <- p_adjust_fwer(multi, method = "maxT")
+head(summary(res))
+```
+
+# Conferences
+
+- Poster at [SIPS 2023](https://www.improvingpsych.org/SIPS2023/): [HTML](conferences/sips2023/poster/sips-2023.html), [PDF](conferences/sips2023/poster/sips-2023.pdf)
+
+# Suggested References
+
+```{r, results='asis', echo = FALSE}
+RefManageR::PrintBibliography(bib)
+```
