@@ -38,7 +38,6 @@ main_findings:
 logoleft_name: "img/psicostat.png"
 logoright_name: "img/unipd.png"
 logocenter_name: "img/qrcode_final.svg"
-knit: pagedown::chrome_print
 output: 
   posterdown::posterdown_betterport:
     self_contained: false
@@ -65,27 +64,27 @@ library(cowplot)
 ```
 
 ```{r data}
-multiverse <- readRDS(here("objects", "multiverse.rds"))
-poster <- readRDS(here("poster", "poster.rds"))
+multiverse <- readRDS(here("conferences", "sips2023", "poster", "objects", "multiverse.rds"))
+poster <- readRDS(here("conferences", "sips2023", "poster", "objects", "poster.rds"))
 multi_grid <- multiverse |> 
   select(rmorris, ragg, model) |> 
   distinct()
 
-multi_sum <- readRDS(here("poster", "multi_sum.rds"))
-res_sum <- readRDS(here("poster", "res_sum.rds"))
+multi_sum <- readRDS(here("conferences", "sips2023", "poster", "objects", "multi_sum.rds"))
+res_sum <- readRDS(here("conferences", "sips2023", "poster", "objects", "res_sum.rds"))
 
 
 nmulti <- nrow(multi_grid)
 ```
 
 ```{r imgs}
-imgs <- readRDS(here("poster", "img", "imgs.rds"))
+imgs <- readRDS(here("conferences", "sips2023", "poster", "img", "imgs.rds"))
 ```
 
 # The Multiverse problem
 
 ```{r}
-knitr::include_graphics("img/big-picture.svg")
+knitr::include_graphics(here("conferences", "sips2023", "poster", "img", "big-picture.svg"))
 ```
 
 **As example, we used the dataset by [Daros et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/34545236/)** with a multivariate meta-analysis of RCTs designs with multiple measure for the same outcome. **We considered a total of `r nmulti`  plausible scenarios**.
